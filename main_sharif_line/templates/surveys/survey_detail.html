@@ -1,0 +1,803 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="survey-container">
+  <!-- هدر اصلی -->
+  <div class="survey-header d-flex justify-content-between align-items-center mb-4">
+    <h2 class="survey-title"><i class="fas fa-poll"></i> {{ survey.title }}</h2>
+    <a href="{% url 'survey_list' %}" class="btn btn-secondary">
+      <i class="fas fa-arrow-left"></i> بازگشت به لیست نظرسنجی‌ها
+    </a>
+  </div>
+
+  <!-- دو ستون اصلی -->
+  <div class="d-flex gap-4">
+
+    <!-- ✅ فرم افزودن سوال (سمت چپ) -->
+    <div class="question-form-container" style="width: 40%;">
+      <div class="card shadow-lg border-0 rounded-4" style="background-color: #f8f9fa;">
+        <div class="card-header text-white rounded-top-4 d-flex align-items-center justify-content-start gap-2"
+          style="background: linear-gradient(135deg, #0d6efd, #0a58ca); height: 70px;">
+          <span
+            style="background: white; color: #0d6efd; border-radius: 50%; width: 30px; height: 30px; display: inline-flex; align-items: center; justify-content: center;">
+            <i class="fas fa-plus"></i>
+          </span>
+          <h5 class="mb-0 fw-bold">افزودن سؤال جدید</h5>
+        </div>
+        <div class="card-body p-4">
+          <form method="post" id="add-question-form" action="{% url 'add-question-ajax' survey.slug %}">
+            {% csrf_token %}
+            <div class="mb-3">
+              {{ question_form.text.label_tag }}<br>
+              {{ question_form.text }}
+            </div>
+
+            <div class="mb-3">
+              {{ question_form.question_type.label_tag }}<br>
+              {{ question_form.question_type }}
+            </div>
+
+            <div class="form-check mb-3 d-flex align-items-center justify-content-between">
+              {{ question_form.is_required }} <!-- چک‌باکس -->
+              {{ question_form.is_required.label_tag }} <!-- متن کنار چک‌باکس -->
+            </div>
+
+            <div class="mb-3">
+              {{ question_form.order.label_tag }}<br>
+              {{ question_form.order }}
+            </div>
+
+
+
+            <button type="submit"
+              class="btn btn-lg text-white fw-semibold d-flex align-items-center justify-content-center gap-2 mt-3 w-100"
+              style="background: linear-gradient(135deg, #0d6efd, #0a58ca); box-shadow: 0 0 15px rgba(0,0,0,0.2); border: none;">
+              <span
+                style="background: white; color: #0d6efd; border-radius: 50%; width: 26px; height: 26px; display: inline-flex; align-items: center; justify-content: center;">
+                <i class="fas fa-plus"></i>
+              </span>
+              ثبت سوال
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- ✅ لیست سوالات (سمت راست) -->
+    <div class="flex-grow-1">
+
+      <!-- هدر لیست سوالات -->
+      <div class="d-flex justify-content-between align-items-center px-3 py-2 mb-3 rounded-3"
+        style="background-color: #f8f9fa; border: 1px solid #ddd;">
+        <div class="d-flex align-items-center gap-2">
+          <i class="fas fa-list-ul text-muted"></i>
+          <strong class="text-dark">لیست سوالات</strong>
+        </div>
+        <span class="badge bg-primary">{{ questions|length }} سوال</span>
+      </div>
+
+      <!-- تکرار سوال‌ها -->
+      <div id="questions-list">
+        {% for question in questions %}
+        <div id="question-{{ question.id }}"
+          class="bg-white shadow-sm rounded-4 p-3 mb-3 position-relative survey-question-item"
+          style="border-right: 4px solid #0d6efd;">
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <!-- آیکون‌ها -->
+            <div class="d-flex gap-2">
+              <a href="#" class="btn btn-sm btn-outline-danger rounded-circle"
+                onclick="deleteQuestion('{{ question.id }}')" id="delete-btn-{{ question.id }}">
+                <i class="fas fa-trash-alt"></i>
+              </a>
+              <a href="javascript:void(0);" onclick="editQuestion('{{ question.id }}')"
+                class="btn btn-sm btn-outline-primary rounded-circle">
+                <i class="fas fa-edit"></i>
+              </a>
+            </div>
+            <!-- متن سوال -->
+            <p class="mb-0 fw-semibold text-end w-100 pe-3">{{ question.text }}</p>
+          </div>
+
+          <!-- تگ‌ها -->
+          <div class="text-end pe-3">
+            {% if question.question_type == 'rating' %}
+            <span class="badge bg-secondary">امتیاز دهی</span>
+            {% elif question.question_type == 'single' %}
+            <span class="badge bg-info">تک‌گزینه‌ای</span>
+            {% elif question.question_type == 'multiple' %}
+            <span class="badge bg-warning text-dark">چندگزینه‌ای</span>
+            {% else %}
+            <span class="badge bg-light text-dark">متنی</span>
+            {% endif %}
+
+            {% if question.is_required %}
+            <span class="badge bg-danger">ضروری</span>
+            {% else %}
+            <span class="badge bg-success">غیر ضروری</span>
+            {% endif %}
+
+          </div>
+
+          <!-- بخش نمایش گزینه‌ها (خارج از div.text-end) -->
+          {% if question.question_type == 'single' or question.question_type == 'multiple' %}
+          <div class="options-section mt-3">
+            <h6 class="text-muted">گزینه‌ها:</h6>
+            <ul class="list-group">
+              {% for option in question.options.all %}
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                <span>{{ option.text }}</span>
+                <div>
+                  <button class="btn btn-sm btn-outline-warning edit-option" data-option-id="{{ option.id }}">
+                    <i class="fas fa-edit"></i>
+                  </button>
+                  <button class="btn btn-sm btn-outline-danger delete-option" data-option-id="{{ option.id }}">
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </div>
+              </li>
+              {% endfor %}
+            </ul>
+            <button class="btn btn-sm btn-success mt-2 add-option" data-question-id="{{ question.id }}">
+              <i class="fas fa-plus"></i> افزودن گزینه جدید
+            </button>
+          </div>
+          {% endif %}
+        </div>
+        {% empty %}
+        <p class="text-muted" id="no-questions-message">هنوز سوالی برای این نظرسنجی ثبت نشده است.</p>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- مدال گزینه‌ها را در انتهای فایل و قبل از اسکریپت‌ها قرار دهید -->
+<div class="modal fade" id="optionModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="optionModalTitle">افزودن گزینه جدید</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="optionForm">
+          {% csrf_token %}
+          <input type="hidden" id="optionId" name="option_id">
+          <input type="hidden" id="questionId" name="question_id">
+          <div class="mb-3">
+            <label for="optionText" class="form-label">متن گزینه</label>
+            <input type="text" class="form-control" id="optionText" name="text" required>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">انصراف</button>
+        <button type="button" class="btn btn-primary" id="saveOption">ذخیره</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- استایل‌ها -->
+<style>
+  .survey-question-item {
+    background-color: #fff;
+    transition: box-shadow 0.3s ease;
+  }
+
+  .survey-question-item:hover {
+    box-shadow: 0 0 12px rgba(0, 86, 179, 0.6);
+  }
+
+  .btn-primary {
+    background-color: #0056b3;
+    border-color: #0056b3;
+  }
+
+  .btn-primary:hover {
+    background-color: #004494;
+    border-color: #003d87;
+  }
+
+  .card-header.bg-primary {
+    background-color: #0056b3 !important;
+  }
+
+  .badge.bg-info {
+    background-color: #3c7fe3 !important;
+  }
+
+  .form-check {
+    display: flex;
+    align-items: center;
+    gap: 1.75rem;
+  }
+
+  .form-check label {
+    margin: 0;
+    /* برای راست‌چین بودن متن */
+    direction: rtl;
+    /* اگر خواستی متن سمت راست باشه */
+    text-align: right;
+    flex: 1;
+  }
+</style>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
+<script>
+  // تابع دریافت کوکی
+  function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+      const cookies = document.cookie.split(';');
+      for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].trim();
+        if (cookie.startsWith(name + '=')) {
+          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+          break;
+        }
+      }
+    }
+    return cookieValue;
+  }
+
+  // تابع حذف سوال با به‌روزرسانی تعداد
+  function deleteQuestion(id) {
+    Swal.fire({
+      title: 'حذف سوال',
+      text: "آیا از حذف این سوال مطمئن هستید؟",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'بله، حذف کن',
+      cancelButtonText: 'انصراف',
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6'
+    }).then(result => {
+      if (!result.isConfirmed) return;
+
+      // 🧹 حذف فوری UI به صورت Optimistic
+      const questionDiv = document.getElementById(`question-${id}`);
+      const countBadge = document.querySelector('.badge.bg-primary');
+      if (questionDiv) questionDiv.remove();
+      const prevCount = parseInt(countBadge.textContent) || 0;
+      countBadge.textContent = `${prevCount - 1} سوال`;
+
+      // اگر لیست پس حذف خالی شد، پیام "هنوز سوالی ثبت نشده"
+      const questionsList = document.getElementById('questions-list');
+      if (!questionsList.querySelector('.survey-question-item')) {
+        const p = document.createElement('p');
+        p.id = 'no-questions-message';
+        p.className = 'text-muted';
+        p.textContent = 'هنوز سوالی برای این نظرسنجی ثبت نشده است.';
+        questionsList.appendChild(p);
+      }
+
+      // حالا درخواست DELETE به سرور
+      fetch(`/question/${id}/delete/`, {
+        method: 'DELETE',
+        headers: {
+          'X-CSRFToken': getCookie('csrftoken')
+        }
+      })
+        .then(response => {
+          if (!response.ok) {
+            Swal.fire('خطا', 'حذف موفق نبود، دوباره تلاش کن', 'error');
+            // در صورت نیاز rollback یا reload:
+            // location.reload();
+          } else {
+          }
+        })
+        .catch(err => {
+          Swal.fire('خطا', 'ارتباط با سرور برقرار نشد.', 'error');
+          // در اینجا هم rollback یا refresh ممکن است لازم باشد
+        });
+    });
+  }
+
+
+
+  // تابع ویرایش سوال بدون رفرش صفحه
+  // function editQuestion(questionId) {
+  //   fetch(`/survey/question/${questionId}/edit/`)
+  //     .then(res => res.text())
+  //     .then(html => {
+  //       Swal.fire({
+  //         title: 'ویرایش سوال',
+  //         html: html,
+  //         showCancelButton: true,
+  //         confirmButtonText: 'ثبت تغییرات',
+  //         cancelButtonText: 'انصراف',
+  //         preConfirm: () => {
+  //           const form = document.getElementById('edit-question-form');
+  //           const formData = new FormData(form);
+  //           return fetch(`/survey/question/${questionId}/edit/`, {
+  //             method: 'POST',
+  //             body: formData,
+  //             headers: {
+  //               'X-CSRFToken': form.querySelector('[name=csrfmiddlewaretoken]').value
+  //             }
+  //           }).then(res => res.json())
+  //             .then(data => {
+  //               if (data.success) {
+  //                 const questionDiv = document.getElementById(`question-${questionId}`);
+
+  //                 // آپدیت متن سوال
+  //                 const questionTextElement = questionDiv.querySelector('p.mb-0.fw-semibold.text-end');
+  //                 if (questionTextElement) {
+  //                   questionTextElement.textContent = data.question.text;
+  //                 }
+
+  //                 // آپدیت نوع سوال و وضعیت ضروری/غیرضروری
+  //                 let typeBadge = '';
+  //                 switch (data.question.type) {
+  //                   case 'rating':
+  //                     typeBadge = '<span class="badge bg-secondary">امتیاز دهی</span>';
+  //                     break;
+  //                   case 'single':
+  //                     typeBadge = '<span class="badge bg-info">تک‌گزینه‌ای</span>';
+  //                     break;
+  //                   case 'multiple':
+  //                     typeBadge = '<span class="badge bg-warning text-dark">چندگزینه‌ای</span>';
+  //                     break;
+  //                   default:
+  //                     typeBadge = '<span class="badge bg-light text-dark">متنی</span>';
+  //                 }
+
+  //                 const requiredBadge = data.question.is_required
+  //                   ? '<span class="badge bg-danger">ضروری</span>'
+  //                   : '<span class="badge bg-success">غیر ضروری</span>';
+
+  //                 const tagsDiv = questionDiv.querySelector('.text-end');
+  //                 while (tagsDiv.firstChild) {
+  //                   tagsDiv.removeChild(tagsDiv.firstChild);
+  //                 }
+  //                 tagsDiv.innerHTML = `${typeBadge} ${requiredBadge}`;
+
+  //                 // آپدیت بخش گزینه‌ها اگر نوع سوال تغییر کرده
+  //                 const optionsSection = questionDiv.querySelector('.options-section');
+  //                 if (data.question.type === 'single' || data.question.type === 'multiple') {
+  //                   if (!optionsSection) {
+  //                     const newOptionsSection = document.createElement('div');
+  //                     newOptionsSection.className = 'options-section mt-3';
+  //                     newOptionsSection.innerHTML = `
+  //                       <h6 class="text-muted">گزینه‌ها:</h6>
+  //                       <ul class="list-group">
+  //                         ${data.question.options.map(opt => `
+  //                           <li class="list-group-item d-flex justify-content-between align-items-center">
+  //                             <span>${opt.text}</span>
+  //                             <div>
+  //                               <button class="btn btn-sm btn-outline-warning edit-option" data-option-id="${opt.id}">
+  //                                 <i class="fas fa-edit"></i>
+  //                               </button>
+  //                               <button class="btn btn-sm btn-outline-danger delete-option" data-option-id="${opt.id}">
+  //                                 <i class="fas fa-trash"></i>
+  //                               </button>
+  //                             </div>
+  //                           </li>
+  //                         `).join('')}
+  //                       </ul>
+  //                       <button class="btn btn-sm btn-success mt-2 add-option" data-question-id="${data.question.id}">
+  //                         <i class="fas fa-plus"></i> افزودن گزینه جدید
+  //                       </button>
+  //                     `;
+  //                     questionDiv.appendChild(newOptionsSection);
+  //                   } else {
+  //                     const optionsList = optionsSection.querySelector('ul.list-group');
+  //                     optionsList.innerHTML = data.question.options.map(opt => `
+  //                       <li class="list-group-item d-flex justify-content-between align-items-center">
+  //                         <span>${opt.text}</span>
+  //                         <div>
+  //                           <button class="btn btn-sm btn-outline-warning edit-option" data-option-id="${opt.id}">
+  //                             <i class="fas fa-edit"></i>
+  //                           </button>
+  //                           <button class="btn btn-sm btn-outline-danger delete-option" data-option-id="${opt.id}">
+  //                             <i class="fas fa-trash"></i>
+  //                           </button>
+  //                         </div>
+  //                       </li>
+  //                     `).join('');
+  //                   }
+  //                 } else if (optionsSection) {
+  //                   optionsSection.remove();
+  //                 }
+
+  //                 return data;
+  //               } else {
+  //                 throw new Error(data.error || 'خطا در ذخیره');
+  //               }
+  //             });
+  //         }
+  //       }).then(result => {
+  //         if (result.isConfirmed && result.value.success) {
+  //           Swal.fire('موفق!', 'تغییرات با موفقیت ذخیره شد.', 'success');
+  //         }
+  //       });
+  //     });
+  // }
+
+
+
+  // اجرا پس از بارگذاری صفحه
+  document.addEventListener('DOMContentLoaded', () => {
+    // مدیریت فرم افزودن سوال
+    const form = document.getElementById('add-question-form');
+    if (form) {
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        fetch(this.action, {
+          method: 'POST',
+          headers: {
+            'X-CSRFToken': getCookie('csrftoken'),
+            'X-Requested-With': 'XMLHttpRequest',
+          },
+          body: new FormData(this)
+        })
+          .then(response => response.json())
+          .then(data => {
+            if (data.success) {
+              const questionsList = document.getElementById('questions-list');
+              const noMsg = document.getElementById('no-questions-message');
+              if (noMsg) {
+                noMsg.remove();
+              }
+
+              // ساخت HTML کارت سوال جدید
+              const div = document.createElement('div');
+              div.id = `question-${data.question.id}`;
+              div.className = 'bg-white shadow-sm rounded-4 p-3 mb-3 position-relative survey-question-item';
+              div.style.borderRight = '4px solid #0d6efd';
+
+              // تعیین نوع سوال
+              let questionTypeBadge = '';
+              switch (data.question.type) {
+
+                case 'rating':
+                  questionTypeBadge = '<span class="badge bg-secondary">امتیاز دهی</span>';
+                  break;
+                case 'single':
+                  questionTypeBadge = '<span class="badge bg-info">تک‌گزینه‌ای</span>';
+                  break;
+                case 'multiple':
+                  questionTypeBadge = '<span class="badge bg-warning text-dark">چندگزینه‌ای</span>';
+                  break;
+                default:
+                  questionTypeBadge = '<span class="badge bg-light text-dark">متنی</span>';
+              }
+
+              // وضعیت ضروری/غیرضروری
+              const requiredBadge = data.question.is_required
+                ? '<span class="badge bg-danger">ضروری</span>'
+                : '<span class="badge bg-success">غیر ضروری</span>';
+
+              // ساخت گزینه‌ها اگر وجود دارند یا اگر نوع سوال چندگزینه‌ای است
+              let optionsHtml = '';
+              if (data.question.type === 'single' || data.question.type === 'multiple') {
+                if (data.question.options && data.question.options.length > 0) {
+                  optionsHtml = `
+                  <div class="options-section mt-3">
+                    <h6 class="text-muted">گزینه‌ها:</h6>
+                    <ul class="list-group">
+                      ${data.question.options.map(opt => `
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                          <span>${opt.text}</span>
+                          <div>
+                            <button class="btn btn-sm btn-outline-warning edit-option" data-option-id="${opt.id}">
+                              <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-danger delete-option" data-option-id="${opt.id}">
+                              <i class="fas fa-trash"></i>
+                            </button>
+                          </div>
+                        </li>
+                      `).join('')}
+                    </ul>
+                    <button class="btn btn-sm btn-success mt-2 add-option" data-question-id="${data.question.id}">
+                      <i class="fas fa-plus"></i> افزودن گزینه جدید
+                    </button>
+                  </div>
+                `;
+                } else {
+                  // اگر گزینه‌ای وجود ندارد، بخش خالی گزینه‌ها را نمایش بده
+                  optionsHtml = `
+                  <div class="options-section mt-3">
+                    <h6 class="text-muted">گزینه‌ها:</h6>
+                    <ul class="list-group">
+                      <!-- گزینه‌ها اینجا اضافه می‌شوند -->
+                    </ul>
+                    <button class="btn btn-sm btn-success mt-2 add-option" data-question-id="${data.question.id}">
+                      <i class="fas fa-plus"></i> افزودن گزینه جدید
+                    </button>
+                  </div>
+                `;
+                }
+              }
+
+              div.innerHTML = `
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <div class="d-flex gap-2">
+                  <a href="#" class="btn btn-sm btn-outline-danger rounded-circle" onclick="deleteQuestion('${data.question.id}')" id="delete-btn-${data.question.id}">
+                    <i class="fas fa-trash-alt"></i>
+                  </a>
+                  <a href="javascript:void(0);" onclick="editQuestion('${data.question.id}')" class="btn btn-sm btn-outline-primary rounded-circle">
+                    <i class="fas fa-edit"></i>
+                  </a>
+                </div>
+                <p class="mb-0 fw-semibold text-end w-100 pe-3">${data.question.text}</p>
+              </div>
+              <div class="text-end pe-3">
+                ${questionTypeBadge}
+                ${requiredBadge}
+              </div>
+              ${optionsHtml}
+            `;
+
+              // اضافه کردن به DOM
+              questionsList.prepend(div);
+
+              // به‌روزرسانی تعداد سوالات
+              const countBadge = document.querySelector('.badge.bg-primary');
+              const currentCount = parseInt(countBadge.textContent);
+              countBadge.textContent = `${currentCount + 1} سوال`;
+
+              // ریست کردن فرم
+              form.reset();
+
+              // نمایش پیام موفقیت
+              Swal.fire({
+                title: 'موفق!',
+                text: 'سوال با موفقیت اضافه شد.',
+                icon: 'success',
+                confirmButtonText: 'باشه'
+              });
+            } else {
+              Swal.fire('خطا', 'خطا در افزودن سوال: ' + JSON.stringify(data.errors), 'error');
+            }
+          })
+          .catch(error => {
+            Swal.fire('خطا', 'خطایی در ارتباط با سرور رخ داد', 'error');
+            console.error(error);
+          });
+      });
+    }
+
+    document.getElementById('saveOption').addEventListener('click', () => {
+      const form = document.getElementById('optionForm');
+      const formData = new FormData(form);
+      const isEdit = Boolean(formData.get('option_id'));
+      const url = isEdit ? `/option/${formData.get('option_id')}/edit/` : '/option/add/';
+
+      // مشخصات گزینه
+      const questionId = formData.get('question_id');
+      const optionText = formData.get('text') || formData.get('option_text'); // بستگی به name ورودی داره
+
+      let tempOptionElement = null;
+
+      // اگه در حالت افزودن هستیم، گزینه رو فوری بساز و نشون بده
+      if (!isEdit) {
+        const questionDiv = document.querySelector(`#question-${questionId}`);
+        const optionsSection = questionDiv.querySelector('.options-section');
+
+        if (optionsSection) {
+          const optionsList = optionsSection.querySelector('ul.list-group');
+
+          tempOptionElement = document.createElement('li');
+          tempOptionElement.className = 'list-group-item d-flex justify-content-between align-items-center opacity-50';
+          tempOptionElement.innerHTML = `
+        <span>${optionText}</span>
+        <div>
+          <button class="btn btn-sm btn-outline-warning edit-option disabled">
+            <i class="fas fa-edit"></i>
+          </button>
+          <button class="btn btn-sm btn-outline-danger delete-option disabled">
+            <i class="fas fa-trash"></i>
+          </button>
+        </div>
+      `;
+          optionsList.appendChild(tempOptionElement);
+        }
+      }
+
+      fetch(url, {
+        method: 'POST',
+        body: formData,
+        headers: {
+          'X-CSRFToken': formData.get('csrfmiddlewaretoken'),
+          'X-Requested-With': 'XMLHttpRequest'
+        }
+      })
+        .then(response => response.json())
+        .then(data => {
+          const optionModal = bootstrap.Modal.getInstance(document.getElementById('optionModal'));
+          optionModal.hide();
+
+          if (data.success) {
+            if (isEdit) {
+              const optionItem = document.querySelector(`.delete-option[data-option-id="${data.option.id}"]`).closest('.list-group-item');
+              optionItem.querySelector('span').textContent = data.option.text;
+            } else {
+              // بروزرسانی گزینه موقت با اطلاعات نهایی
+              tempOptionElement.classList.remove('opacity-50');
+              tempOptionElement.querySelector('.edit-option').classList.remove('disabled');
+              tempOptionElement.querySelector('.delete-option').classList.remove('disabled');
+              tempOptionElement.querySelector('.edit-option').dataset.optionId = data.option.id;
+              tempOptionElement.querySelector('.delete-option').dataset.optionId = data.option.id;
+
+            }
+
+            Swal.fire('موفق!', 'گزینه با موفقیت ذخیره شد.', 'success');
+          } else {
+            Swal.fire('خطا', 'خطا در ذخیره گزینه: ' + JSON.stringify(data.errors), 'error');
+            // حذف گزینه موقتی در صورت خطا
+            if (tempOptionElement) tempOptionElement.remove();
+          }
+        })
+        .catch(error => {
+          Swal.fire('خطا', 'خطایی در ارتباط با سرور رخ داد', 'error');
+          console.error(error);
+          if (tempOptionElement) tempOptionElement.remove();
+        });
+    });
+
+  });
+
+  // استفاده از delegation برای گزینه‌ها
+  document.getElementById('questions-list').addEventListener('click', function (e) {
+    const btn = e.target.closest('button');
+
+    if (!btn) return;
+
+    // حذف گزینه
+    if (btn.classList.contains('delete-option')) {
+      const optionId = btn.dataset.optionId;
+      Swal.fire({
+        title: 'حذف گزینه',
+        text: "آیا از حذف این گزینه مطمئن هستید؟",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'بله، حذف کن',
+        cancelButtonText: 'انصراف',
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          const optionElement = btn.closest('.list-group-item');
+          if (!optionElement) return;
+          optionElement.remove();
+          fetch(`/option/${optionId}/delete/`, {
+            method: 'DELETE',
+            headers: {
+              'X-CSRFToken': getCookie('csrftoken')
+            }
+          }).catch(() => {
+            Swal.fire('خطا', 'خطایی در ارتباط با سرور رخ داد.', 'error');
+          });
+        }
+      });
+    }
+
+    // ویرایش گزینه
+    if (btn.classList.contains('edit-option')) {
+      const optionId = btn.dataset.optionId;
+      const questionId = btn.closest('.survey-question-item').querySelector('.add-option').dataset.questionId;
+      const optionText = btn.closest('.list-group-item').querySelector('span').textContent.trim();
+
+      const optionModal = new bootstrap.Modal(document.getElementById('optionModal'));
+      document.getElementById('optionModalTitle').textContent = 'ویرایش گزینه';
+      document.getElementById('optionId').value = optionId;
+      document.getElementById('questionId').value = questionId;
+      document.getElementById('optionText').value = optionText;
+      optionModal.show();
+    }
+
+    // افزودن گزینه جدید
+    if (btn.classList.contains('add-option')) {
+      const questionId = btn.dataset.questionId;
+      const optionModal = new bootstrap.Modal(document.getElementById('optionModal'));
+      document.getElementById('optionModalTitle').textContent = 'افزودن گزینه جدید';
+      document.getElementById('optionId').value = '';
+      document.getElementById('questionId').value = questionId;
+      document.getElementById('optionText').value = '';
+      optionModal.show();
+    }
+  });
+
+</script>
+<script>
+  function editQuestion(questionId) {
+    fetch(`/survey/question/${questionId}/edit/`)
+      .then(res => res.text())
+      .then(html => {
+        Swal.fire({
+          title: 'ویرایش سوال',
+          html: html,
+          showCancelButton: true,
+          confirmButtonText: 'ثبت تغییرات',
+          cancelButtonText: 'انصراف',
+          preConfirm: () => {
+            const form = document.getElementById('edit-question-form');
+            const formData = new FormData(form);
+            return fetch(`/survey/question/${questionId}/edit/`, {
+              method: 'POST',
+              body: formData,
+              headers: {
+                'X-CSRFToken': form.querySelector('[name=csrfmiddlewaretoken]').value
+              }
+            }).then(res => res.json())
+              .then(data => {
+                if (data.success) {
+                  // 1. آپدیت متن سوال - راه حل مشکل شما
+                  const questionDiv = document.getElementById(`question-${questionId}`);
+                  const questionTextElement = questionDiv.querySelector('.survey-question-text');
+
+                  // اگر عنصر پیدا نشد، با ساختار صحیح ایجادش کن
+                  if (!questionTextElement) {
+                    const newTextElement = document.createElement('p');
+                    newTextElement.className = 'mb-0 fw-semibold text-end survey-question-text w-100 pe-3';
+                    newTextElement.textContent = data.question.text;
+
+                    // جایگزینی با عنصر قدیمی
+                    const headerDiv = questionDiv.querySelector('.d-flex.justify-content-between.align-items-center.mb-2');
+                    const oldText = headerDiv.querySelector('p');
+                    if (oldText) {
+                      headerDiv.replaceChild(newTextElement, oldText);
+                    } else {
+                      headerDiv.appendChild(newTextElement);
+                    }
+                  } else {
+                    questionTextElement.textContent = data.question.text;
+                  }
+
+                  // 2. آپدیت نوع سوال
+                  let typeBadge = '';
+                  switch (data.question.type) {
+                    case 'rating':
+                      typeBadge = '<span class="badge bg-secondary">امتیاز دهی</span>';
+                      break;
+                    case 'single':
+                      typeBadge = '<span class="badge bg-info">تک‌گزینه‌ای</span>';
+                      break;
+                    case 'multiple':
+                      typeBadge = '<span class="badge bg-warning text-dark">چندگزینه‌ای</span>';
+                      break;
+                    default:
+                      typeBadge = '<span class="badge bg-light text-dark">متنی</span>';
+                  }
+
+                  // 3. آپدیت وضعیت ضروری
+                  const requiredBadge = data.question.is_required
+                    ? '<span class="badge bg-danger">ضروری</span>'
+                    : '<span class="badge bg-success">غیر ضروری</span>';
+
+                  // 4. اعمال تغییرات در DOM
+                  const tagsDiv = questionDiv.querySelector('.text-end');
+                  tagsDiv.innerHTML = `${typeBadge} ${requiredBadge}`;
+
+                  // 5. آپدیت گزینه‌ها (همانند قبل)
+                  // ...
+
+                  return data;
+                } else {
+                  throw new Error(data.error || 'خطا در ذخیره');
+                }
+              });
+          }
+        }).then(result => {
+          if (result.isConfirmed && result.value.success) {
+            Swal.fire('موفق!', 'تغییرات با موفقیت ذخیره شد.', 'success');
+          }
+        });
+      });
+  }
+</script>
+
+{% endblock %}

@@ -1,0 +1,60 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="survey-create-container">
+    <div class="survey-create-header">
+        <h2><i class="fas fa-plus-circle"></i> ایجاد نظرسنجی جدید</h2>
+        <a href="{% url 'survey_list' %}" class="btn btn-outline-secondary">
+            <i class="fas fa-arrow-right"></i> بازگشت به لیست
+        </a>
+    </div>
+
+    <div class="survey-create-card">
+        <form method="post" class="needs-validation" novalidate>
+            {% csrf_token %}
+            
+            <div class="form-section">
+                <h4><i class="fas fa-info-circle"></i> اطلاعات پایه</h4>
+                <div class="mb-3">
+                    {{ form.title.label_tag }}
+                    {{ form.title }}
+                    <div class="invalid-feedback">
+                        لطفاً عنوان مناسبی وارد کنید
+                    </div>
+                </div>
+                
+                <div class="mb-3">
+                    {{ form.description.label_tag }}
+                    {{ form.description }}
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h4><i class="fas fa-cog"></i> تنظیمات</h4>
+                <div class="mb-3 form-check form-switch">
+                    {{ form.is_active }}
+                    {{ form.is_active.label_tag }}
+                </div>
+                
+                <div class="mb-3">
+                    {{ form.thank_you_message.label_tag }}
+                    {{ form.thank_you_message }}
+                    <div class="invalid-feedback">
+                        پیام تشکر الزامی است
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save"></i> ذخیره و ادامه به بخش سوالات
+                </button>
+                <a href="{% url 'survey_list' %}" class="btn btn-outline-danger">
+                    <i class="fas fa-times"></i> انصراف
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

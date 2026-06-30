@@ -1,0 +1,17 @@
+asgiref==3.9.1
+captcha==0.7.1
+Django==5.2.4
+django-recaptcha==3.0.0
+pillow==11.3.0
+setuptools==80.9.0
+sqlparse==0.5.3
+wheel==0.45.1
+recaptcha
+psycopg2-binary
+psycopg
+django-widget-tweaks
+django-crispy-forms
+crispy-bootstrap5
+django-ratelimit
+matplotlib
+requests

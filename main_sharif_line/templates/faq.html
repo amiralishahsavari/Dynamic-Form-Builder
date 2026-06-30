@@ -1,0 +1,200 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block content %}
+<!-- هدر با گرادیان هماهنگ -->
+<section class="faq-hero py-5" style="background: linear-gradient(135deg, #79b4ef 0%, #ecedef 100%); border-radius: 10px;">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-8 text-center">
+        <h1 class="display-5 fw-bold mb-4 text-dark">سوالات متداول</h1>
+        <p class="lead text-dark fw-bold">
+          پاسخ به پرسش‌های پرتکرار درباره شریف‌لاین
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- بخش اصلی سوالات -->
+<section class="py-5 bg-white">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <!-- دسته‌بندی ۱: عضویت و ورود -->
+        <div class="mb-5">
+          <h2 class="h3 mb-4 text-primary fw-bold d-flex align-items-center">
+            <i class="fas fa-user-circle me-2"></i>
+            عضویت و ورود به سیستم
+          </h2>
+          
+          <div class="accordion custom-accordion" id="accordionSignup">
+            <!-- سوال ۱ -->
+            <div class="accordion-item mb-3 border-0 rounded-4 overflow-hidden shadow-sm">
+              <h3 class="accordion-header" id="headingOne">
+                <button class="accordion-button collapsed fw-bold text-dark py-3" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne" style="background-color: rgba(121, 180, 239, 0.1);">
+                  <i class="fas fa-question-circle text-primary me-2"></i>
+                  چگونه در شریف‌لاین ثبت‌نام کنم؟
+                </button>
+              </h3>
+              <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionSignup">
+                <div class="accordion-body pt-3 pb-4">
+                  <p class="mb-3">برای ثبت‌نام در شریف‌لاین:</p>
+                  <ol class="mb-0">
+                    <li>روی دکمه «عضویت رایگان» در صفحه اصلی کلیک کنید</li>
+                    <li>فرم ثبت‌نام را با اطلاعات دانشگاهی خود تکمیل نمایید</li>
+                    <li>ایمیل تایید را بررسی و روی لینک فعالسازی کلیک کنید</li>
+                    <li>حساب شما آماده استفاده است!</li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+            
+            <!-- سوال ۲ -->
+            <div class="accordion-item mb-3 border-0 rounded-4 overflow-hidden shadow-sm">
+              <h3 class="accordion-header" id="headingTwo">
+                <button class="accordion-button collapsed fw-bold text-dark py-3" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo" style="background-color: rgba(121, 180, 239, 0.1);">
+                  <i class="fas fa-question-circle text-primary me-2"></i>
+                  آیا برای دانشجویان دانشگاه‌های دیگر امکان ثبت‌نام وجود دارد؟
+                </button>
+              </h3>
+              <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionSignup">
+                <div class="accordion-body pt-3 pb-4">
+                  <p>در حال حاضر سرویس شریف‌لاین مخصوص دانشجویان و اساتید دانشگاه صنعتی شریف می‌باشد. در صورتی که از دانشگاه دیگری هستید و علاقه‌مند به استفاده از سرویس می‌باشید، می‌توانید از طریق صفحه تماس با ما درخواست خود را ارسال نمایید.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- دسته‌بندی ۲: طراحی نظرسنجی -->
+        <div class="mb-5">
+          <h2 class="h3 mb-4 text-primary fw-bold d-flex align-items-center">
+            <i class="fas fa-poll me-2"></i>
+            طراحی نظرسنجی
+          </h2>
+          
+          <div class="accordion custom-accordion" id="accordionSurvey">
+            <!-- سوال ۳ -->
+            <div class="accordion-item mb-3 border-0 rounded-4 overflow-hidden shadow-sm">
+              <h3 class="accordion-header" id="headingThree">
+                <button class="accordion-button collapsed fw-bold text-dark py-3" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree" style="background-color: rgba(121, 180, 239, 0.1);">
+                  <i class="fas fa-question-circle text-primary me-2"></i>
+                  چه نوع سوالاتی می‌توانم در نظرسنجی اضافه کنم؟
+                </button>
+              </h3>
+              <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionSurvey">
+                <div class="accordion-body pt-3 pb-4">
+                  <p>شریف‌لاین از انواع سوالات پشتیبانی می‌کند:</p>
+                  <ul class="row">
+                    <li class="col-md-6 mb-2">سوالات چندگزینه‌ای</li>
+                    <li class="col-md-6 mb-2">سوالات تشریحی</li>
+                    <li class="col-md-6 mb-2">مقیاس امتیازدهی (رتبه‌بندی)</li>
+                    <li class="col-md-6 mb-2">سوالات ماتریسی</li>
+                    <li class="col-md-6 mb-2">آپلود فایل</li>
+                    <li class="col-md-6 mb-2">سوالات شرطی</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            
+            <!-- سوال ۴ -->
+            <div class="accordion-item mb-3 border-0 rounded-4 overflow-hidden shadow-sm">
+              <h3 class="accordion-header" id="headingFour">
+                <button class="accordion-button collapsed fw-bold text-dark py-3" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour" style="background-color: rgba(121, 180, 239, 0.1);">
+                  <i class="fas fa-question-circle text-primary me-2"></i>
+                  آیا می‌توانم نظرسنجی را بعد از انتشار ویرایش کنم؟
+                </button>
+              </h3>
+              <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#accordionSurvey">
+                <div class="accordion-body pt-3 pb-4">
+                  <p>بله، شما می‌توانید نظرسنجی را در هر مرحله‌ای ویرایش کنید، اما توجه داشته باشید:</p>
+                  <ul>
+                    <li class="mb-2">ویرایش سوالاتی که پاسخ‌هایی دریافت کرده‌اند ممکن است بر تحلیل نتایج تأثیر بگذارد</li>
+                    <li class="mb-2">در صورت تغییر اساسی در نظرسنجی، بهتر است یک نسخه جدید ایجاد کنید</li>
+                    <li>تغییرات بلافاصله برای شرکت‌کنندگان فعال می‌شود</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- دسته‌بندی ۳: گزارش‌گیری -->
+        <div class="mb-5">
+          <h2 class="h3 mb-4 text-primary fw-bold d-flex align-items-center">
+            <i class="fas fa-chart-bar me-2"></i>
+            گزارش‌گیری و تحلیل نتایج
+          </h2>
+          
+          <div class="accordion custom-accordion" id="accordionReports">
+            <!-- سوال ۵ -->
+            <div class="accordion-item mb-3 border-0 rounded-4 overflow-hidden shadow-sm">
+              <h3 class="accordion-header" id="headingFive">
+                <button class="accordion-button collapsed fw-bold text-dark py-3" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive" style="background-color: rgba(121, 180, 239, 0.1);">
+                  <i class="fas fa-question-circle text-primary me-2"></i>
+                  چگونه می‌توانم نتایج نظرسنجی را دریافت کنم؟
+                </button>
+              </h3>
+              <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive" data-bs-parent="#accordionReports">
+                <div class="accordion-body pt-3 pb-4">
+                  <p>شریف‌لاین چند روش برای دریافت نتایج ارائه می‌دهد:</p>
+                  <ol>
+                    <li class="mb-2">گزارش خودکار با نمودارهای تعاملی در پنل کاربری</li>
+                    <li class="mb-2">خروجی Excel با تمام داده‌های خام</li>
+                    <li class="mb-2">خروجی PDF برای ارائه‌های رسمی</li>
+                    <li>API برای اتصال به سیستم‌های دیگر</li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+            
+            <!-- سوال ۶ -->
+            <div class="accordion-item mb-3 border-0 rounded-4 overflow-hidden shadow-sm">
+              <h3 class="accordion-header" id="headingSix">
+                <button class="accordion-button collapsed fw-bold text-dark py-3" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSix" aria-expanded="false" aria-controls="collapseSix" style="background-color: rgba(121, 180, 239, 0.1);">
+                  <i class="fas fa-question-circle text-primary me-2"></i>
+                  آیا امکان فیلتر کردن نتایج بر اساس مشخصات پاسخ‌دهندگان وجود دارد؟
+                </button>
+              </h3>
+              <div id="collapseSix" class="accordion-collapse collapse" aria-labelledby="headingSix" data-bs-parent="#accordionReports">
+                <div class="accordion-body pt-3 pb-4">
+                  <p>بله، شما می‌توانید نتایج را بر اساس:</p>
+                  <ul class="row">
+                    <li class="col-md-6 mb-2">دانشکده</li>
+                    <li class="col-md-6 mb-2">مقطع تحصیلی</li>
+                    <li class="col-md-6 mb-2">جنسیت</li>
+                    <li class="col-md-6 mb-2">تاریخ پاسخ‌دهی</li>
+                    <li class="col-md-6 mb-2">و هر فیلد دموگرافیک دیگری که جمع‌آوری کرده‌اید</li>
+                  </ul>
+                  <p class="mb-0">این فیلترها به شما کمک می‌کنند تحلیل‌های دقیق‌تری انجام دهید.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA پایانی -->
+<section class="py-5" style="background: linear-gradient(135deg, #79b4ef 0%, #ecedef 100%);">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-8 text-center">
+        <h2 class="h1 fw-bold mb-4 text-dark">هنوز سوالی دارید؟</h2>
+        <p class="lead mb-4 text-dark fw-bold">تیم پشتیبانی ما آماده پاسخگویی به شماست</p>
+        <div class="d-flex flex-wrap justify-content-center gap-3">
+          <a href="#" class="btn btn-primary btn-lg px-5 py-3 shadow">
+            <i class="fas fa-headset me-2"></i>تماس با پشتیبانی
+          </a>
+          <a href="#" class="btn btn-outline-primary btn-lg px-5 py-3 shadow">
+            <i class="fas fa-envelope me-2"></i>ارسال ایمیل
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,28 @@
+<div class="modal-header bg-primary text-white">
+  <h5 class="modal-title"><i class="fa fa-user-circle me-2"></i>پروفایل کاربر</h5>
+  <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="بستن"></button>
+</div>
+<div class="modal-body">
+  <div class="mb-3">
+    <span class="fw-bold">نام کاربری:</span>
+    <span class="badge bg-secondary">{{ user.username }}</span>
+  </div>
+  <hr>
+  <h6 class="mb-2"><i class="fa fa-list me-1"></i>نظرسنجی‌های ثبت‌شده:</h6>
+  {% if surveys %}
+    <ul class="list-group mb-3">
+      {% for survey in surveys %}
+        <li class="list-group-item">{{ survey.title }}</li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <div class="alert alert-info">هنوز نظرسنجی‌ای ثبت نکرده‌اید.</div>
+  {% endif %}
+</div>
+<div class="modal-footer justify-content-between">
+  <a href="{% url 'password_change' %}" class="btn btn-outline-primary">
+    <i class="fa fa-edit me-1"></i> ویرایش پروفایل
+  </a>
+  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">بستن</button>
+</div>
+

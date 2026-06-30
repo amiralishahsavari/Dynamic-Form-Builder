@@ -1,0 +1,254 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %}نتایج نظرسنجی - {{ survey.title }}{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/survey_results.css' %}">
+<style>
+    .chart-container {
+        max-width: 400px;
+        margin: 0 auto;
+    }
+    .chart-canvas {
+        width: 100% !important;
+        height: 300px !important;
+    }
+    .accordion-item {
+        margin-bottom: 10px;
+        border-radius: 8px;
+        overflow: hidden;
+        border: 1px solid #dee2e6;
+    }
+    .progress-bar-custom {
+        height: 20px;
+        border-radius: 4px;
+    }
+    .response-time {
+        font-size: 0.8rem;
+        color: #6c757d;
+    }
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // رنگ‌های ثابت برای نمودارها
+        const colors = ['#4e73df', '#1cc88a', '#36b9cc', '#f6c23e', 
+                       '#e74a3b', '#6610f2', '#fd7e14', '#20c9a6'];
+        
+        {% for q in questions %}
+            {% if q.question_type != 'text' and q.chart_data %}
+                const ctx{{ q.id }} = document.getElementById('chart-{{ q.id }}');
+                if (ctx{{ q.id }}) {
+                    new Chart(ctx{{ q.id }}, {
+                        type: 'pie',
+                        data: {
+                            labels: [
+                                {% for row in q.chart_data %}
+                                    '{{ row.option|escapejs }}'{% if not forloop.last %},{% endif %}
+                                {% endfor %}
+                            ],
+                            datasets: [{
+                                data: [
+                                    {% for row in q.chart_data %}
+                                        {{ row.count }}{% if not forloop.last %},{% endif %}
+                                    {% endfor %}
+                                ],
+                                backgroundColor: colors.slice(0, {{ q.chart_data|length }})
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            plugins: {
+                                legend: {
+                                    position: 'right',
+                                    rtl: true,
+                                    labels: {
+                                        padding: 20,
+                                        usePointStyle: true
+                                    }
+                                },
+                                tooltip: {
+                                    callbacks: {
+                                        label: function(context) {
+                                            return `${context.label}: ${context.raw} (${Math.round(context.percent)}%)`;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
+            {% endif %}
+        {% endfor %}
+    });
+</script>
+{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>نتایج نظرسنجی: {{ survey.title }}</h2>
+        <a href="{% url 'survey_info' survey.slug %}" class="btn btn-outline-primary">
+            <i class="fas fa-arrow-left"></i> بازگشت
+        </a>
+    </div>
+
+    <!-- آمار کلی -->
+    <div class="row mb-4 g-3">
+        <div class="col-md-4">
+            <div class="card text-center h-100 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title text-primary">
+                        <i class="fas fa-question-circle me-2"></i>تعداد سوالات
+                    </h5>
+                    <p class="card-text display-6">{{ questions|length }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-center h-100 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title text-success">
+                        <i class="fas fa-users me-2"></i>تعداد پاسخ‌ها
+                    </h5>
+                    <p class="card-text display-6">{{ total_responses }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-center h-100 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title text-info">
+                        <i class="fas fa-clock me-2"></i>آخرین پاسخ
+                    </h5>
+                    <p class="card-text">{{ last_response|date:"Y/m/d H:i" }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- نمودارها و جداول -->
+    {% for q in questions %}
+        {% if q.question_type != 'text' and q.chart_data %}
+        <div class="card mb-4 shadow-sm">
+            <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                <span>{{ q.text }} ({{ q.get_question_type_display }})</span>
+                <span class="badge bg-light text-primary">{{ q.chart_data|length }} گزینه</span>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-lg-5 mb-4 mb-lg-0">
+                        <div class="chart-container">
+                            <canvas id="chart-{{ q.id }}" class="chart-canvas"></canvas>
+                        </div>
+                    </div>
+                    <div class="col-lg-7">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th width="40%">گزینه</th>
+                                        <th width="20%">تعداد</th>
+                                        <th width="20%">درصد</th>
+                                        <th width="20%">نمودار</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for row in q.chart_data %}
+                                    <tr>
+                                        <td>{{ row.option }}</td>
+                                        <td>{{ row.count }}</td>
+                                        <td>{{ row.percent }}%</td>
+                                        <td>
+                                            <div class="progress progress-bar-custom">
+                                                <div class="progress-bar" 
+                                                     style="width: {{ row.percent }}%; 
+                                                            background-color: {% cycle '#4e73df' '#1cc88a' '#36b9cc' '#f6c23e' '#e74a3b' '#6610f2' '#fd7e14' '#20c9a6' %}">
+                                                    {% if row.percent > 10 %}{{ row.percent }}%{% endif %}
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    {% endfor %}
+
+    <!-- پاسخ‌های متنی -->
+    {% if responses %}
+    <div class="card shadow-sm mt-4">
+        <div class="card-header bg-info text-white d-flex justify-content-between align-items-center">
+            <span><i class="fas fa-list-alt me-2"></i>پاسخ‌های ارسال شده</span>
+            <span class="badge bg-light text-info">{{ responses|length }} پاسخ</span>
+        </div>
+        <div class="card-body p-0">
+            <div class="accordion accordion-flush" id="responsesAccordion">
+                {% for r in responses %}
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" 
+                                data-bs-toggle="collapse" data-bs-target="#response{{ r.id }}"
+                                aria-expanded="false" aria-controls="response{{ r.id }}">
+                            <span class="badge bg-primary me-2">#{{ forloop.counter }}</span>
+                            {{ r.created_at|date:"Y/m/d H:i" }}
+                            <span class="response-time ms-auto">
+                                {{ r.created_at|timesince }} قبل
+                            </span>
+                        </button>
+                    </h2>
+                    <div id="response{{ r.id }}" class="accordion-collapse collapse" 
+                         aria-labelledby="heading{{ r.id }}" data-bs-parent="#responsesAccordion">
+                        <div class="accordion-body">
+                            <div class="list-group">
+                                {% for ans in r.answers.all %}
+                                <div class="list-group-item border-0">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <h6 class="mb-1">{{ ans.question.text }}</h6>
+                                        <small class="text-muted">{{ ans.question.get_question_type_display }}</small>
+                                    </div>
+                                    <div class="mt-2">
+                                        {% if ans.text_answer %}
+                                            <p class="mb-1 p-2 bg-light rounded">{{ ans.text_answer }}</p>
+                                        {% endif %}
+                                        {% if ans.rating_answer %}
+                                            <div class="d-flex align-items-center">
+                                                <div class="rating-stars me-2">
+                                                    {% for i in "12345" %}
+                                                        <i class="fas fa-star{% if forloop.counter > ans.rating_answer %} text-muted{% else %} text-warning{% endif %}"></i>
+                                                    {% endfor %}
+                                                </div>
+                                                <span>(امتیاز: {{ ans.rating_answer }})</span>
+                                            </div>
+                                        {% endif %}
+                                        {% if ans.selected_options.all %}
+                                            <div class="mt-2">
+                                                {% for opt in ans.selected_options.all %}
+                                                    <span class="badge bg-secondary me-1">{{ opt.text }}</span>
+                                                {% endfor %}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                {% if not forloop.last %}<hr class="my-2">{% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

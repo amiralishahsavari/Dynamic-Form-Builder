@@ -1,0 +1,215 @@
+{% extends 'base/base.html' %}
+{% block content %}
+<style>
+  :root {
+    --primary-color: #3366ff;
+    --secondary-color: #00d2ff;
+    --text-muted: #9aa5b1;
+    --rating-border: #8fa5c7;
+    --rating-selected: #005c8a;
+  }
+
+  .gradient-header {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    border-radius: 1.5rem 1.5rem 0 0;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.07);
+  }
+
+  .survey-card {
+    background: #fff;
+    border-radius: 1.5rem;
+    box-shadow: 0 4px 32px rgba(0,0,0,0.08);
+    overflow: hidden;
+    margin-bottom: 2rem;
+  }
+
+  .rating-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 1.25rem;
+  }
+
+  .rating-points {
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+  }
+
+  .rating-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .rating-number {
+    margin-top: 6px;
+    font-size: 0.95rem;
+    color: var(--text-muted);
+  }
+
+  .rating-points input[type="radio"] {
+    display: none;
+  }
+
+  .rating-points label {
+    display: inline-block;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 2.5px solid var(--rating-border);
+    background-color: transparent;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    box-sizing: border-box;
+  }
+
+  .rating-points label:hover {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px #d0e8ff;
+  }
+
+  .rating-points input[type="radio"]:checked + label {
+    background-color: var(--rating-selected);
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 0 3px #00c6ff55;
+  }
+
+  .rating-labels {
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    margin-top: 6px;
+  }
+
+  .question-meta {
+    font-size: 0.75rem;
+    color: #b0b0b0;
+  }
+
+  .question-optional {
+    font-size: 0.8rem;
+  }
+
+  .question-container {
+    font-size: 0.95rem;
+    background: #f9fbfe;
+    border-radius: 1rem;
+    box-shadow: 0 2px 12px rgba(79,140,255,0.04);
+    padding: 1.25rem 1rem;
+    margin-bottom: 1.5rem;
+    border-left: 4px solid #c7e1ff;
+    transition: all 0.2s;
+  }
+
+  .question-container:focus-within {
+    box-shadow: 0 0 0 3px #cce5ff;
+  }
+
+  .submit-btn {
+    font-size: 1.1rem;
+    font-weight: 600;
+    padding: 0.75rem 0;
+    border-radius: 2rem;
+    box-shadow: 0 2px 12px rgba(79,140,255,0.10);
+    background: transparent;
+    color: var(--primary-color);
+    border: 2.5px solid var(--primary-color);
+    transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+  }
+  .submit-btn:hover {
+    background: var(--primary-color);
+    color: #fff;
+    box-shadow: 0 4px 24px rgba(51,102,255,0.18);
+  }
+
+  @media (max-width: 768px) {
+    .survey-card, .gradient-header { border-radius: 1rem; }
+    .question-container { padding: 1rem; }
+    .rating-points { gap: 20px; }
+    .rating-labels { gap: 20px; }
+  }
+</style>
+
+<div class="container py-4">
+  <div class="row justify-content-center">
+    <div class="col-lg-9 col-md-11">
+      <div class="survey-card">
+        <!-- هدر نظرسنجی -->
+        <div class="gradient-header text-center py-5 px-3">
+          <div class="mb-3">
+            <i class="bi bi-clipboard-check" style="font-size:2.3rem;"></i>
+          </div>
+          <h2 class="fw-bold mb-2" style="font-size: 2.2rem; letter-spacing: -1px;">{{ survey.title }}</h2>
+          {% if survey.description %}
+            <p class="mb-0 small">{{ survey.description }}</p>
+          {% endif %}
+        </div>
+        <div class="p-4 p-md-5">
+          <form method="post" class="needs-validation" novalidate>
+            {% csrf_token %}
+            {% for field in form %}
+              {% with qid=field.name|cut:'question_' %}
+                {% for q in survey.questions.all %}
+                  {% if q.id|stringformat:'s' == qid %}
+                    <div class="question-container">
+                      <div class="d-flex justify-content-between align-items-start mb-2">
+                        <div>
+                          <span class="badge bg-primary bg-opacity-10 text-primary me-2" style="font-size:0.95rem;">سوال {{ forloop.counter }}</span>
+                          <span class="fw-semibold">{{ field.label|safe }}</span>
+                          {% if field.field.required %}
+                            <span class="text-danger question-optional ms-2">الزامی</span>
+                          {% else %}
+                            <span class="text-muted question-optional ms-2">اختیاری</span>
+                          {% endif %}
+                        </div>
+                        <div class="question-meta">
+                          {{ field.field.widget.input_type|default:"text" }}
+                        </div>
+                      </div>
+
+                      {% if q.question_type == 'rating' %}
+                        <div class="rating-block">
+                          <div class="rating-points">
+                            {% for i in "54321" %}
+                              <div class="rating-item">
+                                <input type="radio" name="{{ field.name }}" value="{{ i }}" id="{{ field.name }}_{{ i }}" {% if field.value == i %}checked{% endif %}>
+                                <label for="{{ field.name }}_{{ i }}"></label>
+                                <span class="rating-number">{{ i }}</span>
+                              </div>
+                            {% endfor %}
+                          </div>
+                        </div>
+                        {% if field.errors %}
+                          <div class="text-danger small mt-2">{{ field.errors }}</div>
+                        {% endif %}
+                      {% else %}
+                        <div class="mt-2">
+                          {{ field }}
+                        </div>
+                        {% if field.errors %}
+                          <div class="text-danger small mt-2">{{ field.errors }}</div>
+                        {% endif %}
+                      {% endif %}
+                    </div>
+                  {% endif %}
+                {% endfor %}
+              {% endwith %}
+            {% endfor %}
+
+            <!-- دکمه ارسال -->
+            <div class="d-grid mt-4">
+              <button type="submit" class="submit-btn">
+                <i class="bi bi-send me-2"></i> ارسال پاسخ‌ها
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

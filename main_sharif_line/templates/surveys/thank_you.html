@@ -1,0 +1,92 @@
+{% extends 'base/base.html' %}
+{% block content %}
+<style>
+  .thankyou-bg {
+    background: linear-gradient(135deg, #dbeafe 0%, #f1f5f9 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1rem;
+  }
+
+  .thankyou-card {
+    background: #ffffff;
+    border-radius: 2rem;
+    box-shadow: 0 15px 60px rgba(0, 98, 255, 0.12);
+    padding: 4rem 3rem;
+    max-width: 680px;
+    width: 100%;
+    text-align: center;
+    animation: fadeInUp 0.6s ease;
+  }
+
+  .thankyou-icon {
+    font-size: 4.8rem;
+    color: #10b981;
+    margin-bottom: 1.4rem;
+    filter: drop-shadow(0 3px 14px #10b98133);
+  }
+
+  .thankyou-title {
+    font-size: 2rem;
+    font-weight: 800;
+    color: #1e293b;
+    margin-bottom: 1rem;
+    line-height: 1.5;
+  }
+
+  .thankyou-message {
+    font-size: 1.1rem;
+    color: #475569;
+    margin-bottom: 2.2rem;
+    line-height: 1.75;
+  }
+
+  .thankyou-btn {
+    font-size: 1.05rem;
+    font-weight: 600;
+    padding: 0.8rem 2.5rem;
+    border-radius: 2rem;
+    border: 2px solid #3b82f6;
+    background: transparent;
+    color: #3b82f6;
+    transition: all 0.3s ease;
+  }
+
+  .thankyou-btn:hover {
+    background: #3b82f6;
+    color: white;
+    box-shadow: 0 4px 18px rgba(59, 130, 246, 0.3);
+  }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+</style>
+
+<div class="thankyou-bg">
+  <div class="thankyou-card">
+    <div class="thankyou-icon">
+      <i class="fas fa-check-circle"></i>
+      {# اگر از Bootstrap Icons استفاده می‌کنی، این رو بذار: <i class="bi bi-patch-check-fill"></i> #}
+    </div>
+    <div class="thankyou-title">
+      از شرکت شما در نظرسنجی<br>«{{ survey_title }}» سپاسگزاریم!
+    </div>
+    <div class="thankyou-message">
+      {{ thank_you_message|default:"پاسخ‌های شما با موفقیت ثبت شد. از همراهی‌تان متشکریم." }}
+    </div>
+    <a href="{% url 'home' %}" class="thankyou-btn">
+      بازگشت به صفحه اصلی
+    </a>
+  </div>
+</div>
+{% endblock %}

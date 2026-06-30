@@ -1,0 +1,188 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block content %}
+<!-- هدر با گرادیان هماهنگ با صفحه اصلی -->
+<section class="about-hero py-6" style="background: linear-gradient(135deg, #79b4ef 0%, #ecedef 100%); border-radius: 10px;">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-lg-6 order-lg-1 order-2">
+        <h1 class="display-4 fw-bold mb-2 text-dark">تیم خلاق شریف‌لاین</h1>
+        <p class="lead mb-4 fs-4 text-dark fw-bold">
+          ترکیبی از بهترین استعدادهای دانشگاه صنعتی شریف برای تحول در نظرسنجی‌های آموزشی
+        </p>
+        <div class="d-flex flex-wrap gap-3">
+          <a href="#team" class="btn btn-primary btn-lg px-4 py-3 shadow">
+            <i class="fas fa-users me-2"></i>معرفی تیم
+          </a>
+          <a href="#mission" class="btn btn-outline-primary btn-lg px-4 py-3 shadow">
+            <i class="fas fa-bullseye me-2"></i>ماموریت ما
+          </a>
+        </div>
+      </div>
+      <div class="col-lg-6 order-lg-2 order-1">
+        <img src="https://i.ibb.co/gZQq3nGD/vecteezy-dedicated-team-flat-style-illustration-vector-design-11414200.jpg" 
+             class="img-fluid rounded-4 shadow-lg floating my-4" 
+             alt="همکاری تیمی"
+             style=" width: 450px; border: 3px solid rgba(255,255,255,0.7);">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- بخش ماموریت  -->
+<section id="mission" class="py-6 bg-white position-relative">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-10 text-center mb-5">
+        <p class="lead text-dark fw-bold my-4">
+            پلتفرمی طراحی شده توسط دانشگاهیان برای دانشگاهیان
+        </p>
+      </div>
+    </div>
+    
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="mission-card p-4 h-100 rounded-4 shadow-sm" style="border-top: 5px solid #79b4ef;">
+          <div class="icon-wrapper mb-4" style="width: 60px; height: 60px; background: rgba(121, 180, 239, 0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+            <i class="fas fa-lightbulb fa-2x text-primary"></i>
+          </div>
+          <h3 class="mb-3"  style="font-weight: bold;">تخصص دانشگاهی</h3>
+          <p class="text-muted" style="font-weight: bold;">طراحی شده توسط تیمی از دانشجویان و اساتید دانشگاه شریف با شناخت کامل از نیازهای آموزشی</p>
+        </div>
+      </div>
+      
+      <div class="col-md-4">
+        <div class="mission-card p-4 h-100 rounded-4 shadow-sm" style="border-top: 5px solid #0d6efd;">
+          <div class="icon-wrapper mb-4" style="width: 60px; height: 60px; background: rgba(13, 110, 253, 0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+            <i class="fas fa-cogs fa-2x text-primary"></i>
+          </div>
+          <h3 class="mb-3" style="font-weight: bold;">فناوری پیشرفته</h3>
+          <p class="text-muted" style="font-weight: bold;">بهترین تکنولوژی‌های روز دنیا در حوزه تحلیل داده و تجربه کاربری</p>
+        </div>
+      </div>
+      
+      <div class="col-md-4">
+        <div class="mission-card p-4 h-100 rounded-4 shadow-sm" style="border-top: 5px solid #6f42c1;">
+          <div class="icon-wrapper mb-4" style="width: 60px; height: 60px; background: rgba(111, 66, 193, 0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+            <i class="fas fa-heart fa-2x text-primary"></i>
+          </div>
+          <h3 class="mb-3" style="font-weight: bold;">تعهد به کیفیت</h3>
+          <p class="text-muted" style="font-weight: bold;">تضمین رضایت 100% کاربران با پشتیبانی اختصاصی و به‌روزرسانی مستمر</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- بخش آمار با گرادیان معکوس -->
+<section class="py-5" style="background: linear-gradient(135deg, #ecedef 0%, #79b4ef 100%); border-radius: 10px;">
+  <div class="container">
+    <div class="row text-center">
+      <div class="col-md-3 col-6 mb-4 mb-md-0">
+        <div class="counter-item">
+          <h3 class="display-4 fw-bold text-white mb-2">+۵۰</h3>
+          <p class="text-white-80 mb-0" style="font-weight: bold;">پروژه موفق</p>
+        </div>
+      </div>
+      <div class="col-md-3 col-6 mb-4 mb-md-0">
+        <div class="counter-item">
+          <h3 class="display-4 fw-bold text-white mb-2">۱۰۰٪</h3>
+          <p class="text-white-80 mb-0" style="font-weight: bold;">رضایت کاربران</p>
+        </div>
+      </div>
+      <div class="col-md-3 col-6">
+        <div class="counter-item">
+          <h3 class="display-4 fw-bold text-white mb-2">۲۴/۷</h3>
+          <p class="text-white-80 mb-0" style="font-weight: bold;">پشتیبانی</p>
+        </div>
+      </div>
+      <div class="col-md-3 col-6">
+        <div class="counter-item">
+          <h3 class="display-4 fw-bold text-white mb-2">۵+</h3>
+          <p class="text-white-80 mb-0" style="font-weight: bold;">سال تجربه</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- بخش تیم -->
+<section id="team" class="py-6 bg-white">
+    <div class="row justify-content-center mb-6">
+      <div class="col-lg-8 text-center">
+        <p class="lead text-dark fw-bold mb-3 my-4" >معرفی متخصصان تیم ما</p>
+      </div>
+    </div>
+    
+    <div class="row g-4 justify-content-center">
+      <!-- عضو تیم 1 -->
+      <div class="col-xl-3 col-lg-4 col-md-6">
+        <div class="team-card text-center p-4 rounded-4 shadow-sm h-100">
+          <div class="team-img mx-auto mb-4 rounded-4 overflow-hidden" style="width: 180px; height: 180px;">
+            <img src="https://i.ibb.co/YB68gy09/photo-1560250097-0b93528c311a.jpg" class="img-fluid w-100 h-100 object-fit-cover" alt="مدیر محصول">
+          </div>
+          <h4 class="mb-2">سامان حسینی</h4>
+          <p class="text-primary fw-bold mb-3">مدیر محصول</p>
+          <p class="text-muted mb-4 fw-bold">دانشجوی دکترای مهندسی نرم‌افزار با ۸ سال تجربه در طراحی سیستم‌های آموزشی</p>
+          <div class="social-links">
+            <a href="#" class="btn btn-sm btn-outline-primary rounded-circle mx-1"><i class="fab fa-linkedin-in"></i></a>
+            <a href="#" class="btn btn-sm btn-outline-primary rounded-circle mx-1"><i class="fab fa-twitter"></i></a>
+          </div>
+        </div>
+      </div>
+      
+      <!-- عضو تیم 2 -->
+      <div class="col-xl-3 col-lg-4 col-md-6">
+        <div class="team-card text-center p-4 rounded-4 shadow-sm h-100">
+          <div class="team-img mx-auto mb-4 rounded-4 overflow-hidden" style="width: 180px; height: 180px;">
+            <img src="https://i.ibb.co/DDQwW0Cb/photo-1573496359142-b8d87734a5a2-1.jpg" class="img-fluid w-100 h-100 object-fit-cover" alt="توسعه‌دهنده ارشد">
+          </div>
+          <h4 class="mb-2">مریم محمدی</h4>
+          <p class="text-primary fw-bold mb-3">توسعه‌دهنده ارشد</p>
+          <p class="text-muted mb-4 fw-bold">متخصص Full-stack با تمرکز بر سیستم‌های امن و scalable</p>
+          <div class="social-links">
+            <a href="#" class="btn btn-sm btn-outline-primary rounded-circle mx-1"><i class="fab fa-github"></i></a>
+            <a href="#" class="btn btn-sm btn-outline-primary rounded-circle mx-1"><i class="fab fa-stack-overflow"></i></a>
+          </div>
+        </div>
+      </div>
+      
+      <!-- عضو تیم 3 -->
+      <div class="col-xl-3 col-lg-4 col-md-6">
+        <div class="team-card text-center p-4 rounded-4 shadow-sm h-100">
+          <div class="team-img mx-auto mb-4 rounded-4 overflow-hidden" style="width: 180px; height: 180px;">
+            <img src="https://i.ibb.co/fzfZP8zs/portrait-tablet-psychology-with-man-chair-white-background-studio-listen-diagnosis-psychologist-ment.jpg" class="img-fluid w-100 h-100 object-fit-cover" alt="طراح تجربه کاربری">
+          </div>
+          <h4 class="mb-2">کیوان رضایی</h4>
+          <p class="text-primary fw-bold mb-3">طراح تجربه کاربری</p>
+          <p class="text-muted mb-4 fw-bold">متخصص در طراحی تعاملی و روانشناسی کاربران آموزشی</p>
+          <div class="social-links">
+            <a href="#" class="btn btn-sm btn-outline-primary rounded-circle mx-1"><i class="fab fa-dribbble"></i></a>
+            <a href="#" class="btn btn-sm btn-outline-primary rounded-circle mx-1"><i class="fab fa-behance"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+</section>
+
+<!-- CTA پایانی -->
+<section class="py-6" style="background: linear-gradient(135deg, #79b4ef 0%, #ecedef 100%); border-radius: 10px;">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-8 text-center">
+        <h2 class="display-6 fw-bold mb-4 text-dark">آماده شروع هستید؟</h2>
+        <p class="lead mb-5 text-dark  fw-bold">همین حالا به جامعه دانشگاهیان بپیوندید و تجربه نظرسنجی حرفه‌ای را لذت ببرید</p>
+        <div class="d-flex flex-wrap justify-content-center gap-3">
+          <a href="{% url 'home' %}" class="btn btn-primary btn-lg px-5 py-3 shadow" style="margin-bottom: 10px;">
+            <i class="fas fa-rocket me-2"></i>شروع کنید
+          </a>
+          <a href="{% url 'faq' %}" class="btn btn-outline-primary btn-lg px-5 py-3 shadow" style="margin-bottom: 10px;">
+            <i class="fas fa-question-circle me-2"></i>راهنمایی
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

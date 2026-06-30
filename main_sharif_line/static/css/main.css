@@ -1,0 +1,593 @@
+/* استایل‌های پایه و ریست */
+:root {
+  --primary-color: #0d6efd;
+  --secondary-color: #6c757d;
+  --light-color: #f8f9fa;
+  --dark-color: #343a40;
+  --shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.15);
+  --transition-base: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Vazir', Tahoma, sans-serif;
+  font-weight: bold;
+  background-color: var(--light-color);
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  line-height: 1.6;
+  color: #212529;
+}
+
+/* بهبود یافته نوار ناوبری */
+.navbar {
+  box-shadow: var(--shadow-sm);
+  padding: 0.75rem 1.5rem;
+  background-color: rgb(255, 255, 255) !important;
+}
+
+.navbar-custom {
+  background-color: #bed0ea !important;  /* نمونه رنگ آبی تیره */
+}
+
+.navbar-brand {
+  font-weight: bold;
+  font-size: 1.5rem;
+  transition: var(--transition-base);
+  color: var(--primary-color) !important;
+}
+
+/* بهبود یافته لینک‌های ناوبری */
+.navbar-nav {
+  gap: 0.5rem;
+}
+
+.nav-link {
+  transition: var(--transition-base);
+  position: relative;
+  padding: 0.5rem 1rem;
+  display: inline-block;
+  transform-origin: center;
+  color: var(--dark-color) !important;
+  border-radius: 0.25rem;
+}
+
+.nav-link:hover {
+  transform: scale(1.05);
+  background-color: rgba(13, 110, 253, 0.1);
+  color: var(--primary-color) !important;
+}
+
+.nav-link.active {
+  transform: scale(1.05);
+  font-weight: bolder;
+  background-color: var(--primary-color);
+  border-radius: 0.25rem;
+  box-shadow: var(--shadow-sm);
+  color: white !important;
+}
+
+.nav-link.active::after {
+  content: '';
+  position: absolute;
+  bottom: -3px;
+  right: 25%;
+  width: 50%;
+  height: 3px;
+  background-color: white;
+  border-radius: 3px;
+  transition: var(--transition-base);
+}
+
+.nav-link:active {
+  transform: scale(0.98);
+  transition: all 0.1s ease;
+}
+
+/* بهبود یافته دکمه‌ها */
+.btn-outline-light {
+  color: white !important;
+  background-color: var(--primary-color) !important;
+  border-color: var(--primary-color) !important;
+  transition: var(--transition-base);
+  border-width: 2px;
+}
+
+.btn-outline-light:hover {
+  color: black  !important;
+  transform: scale(1.05);
+  box-shadow: var(--shadow-sm);
+  background-color: white;
+}
+
+/* بهبود یافته منوی کاربر */
+.dropdown-menu {
+  text-align: right;
+  border-radius: 0.5rem;
+  box-shadow: var(--shadow-md);
+  border: none;
+  margin-top: 0.5rem;
+}
+
+.dropdown-item {
+  transition: var(--transition-base);
+  padding: 0.5rem 1.25rem;
+  color:  var(--dark-color);
+}
+
+.dropdown-item:hover {
+  background-color: rgba(13, 110, 253, 0.1);
+  transform: translateX(-3px);
+  color: var(--primary-color);
+}
+
+.dropdown-divider {
+  margin: 0.25rem 0;
+}
+
+/* بهبود یافته فوتر */
+main {
+  flex: 1;
+  padding-bottom: 2rem;
+}
+
+footer {
+  margin-top: auto;
+  width: 100%;
+  padding: 2rem 0;
+  background-color: var(--dark-color);
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+  color: white;
+}
+
+footer a {
+  text-decoration: none;
+  transition: var(--transition-base);
+  display: inline-block;
+  color: rgba(255, 255, 255, 0.8) !important;
+}
+
+footer a:hover {
+  color: white !important;
+  transform: translateY(-2px);
+}
+
+.footer-links {
+  display: flex;
+  gap: 1.5rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* بهبود یافته بخش Hero */
+.hero-section {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  padding: 5rem 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+}
+
+.hero-bg-pattern {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  opacity: 0.05;
+  background-size: 30px 30px;
+  background-image: radial-gradient(var(--primary-color) 1px, transparent 1px);
+}
+
+/* بهبود یافته کارت‌های ویژگی */
+.feature-card {
+  transition: var(--transition-base);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 0.75rem;
+  background-color: white;
+  height: 100%;
+  overflow: hidden;
+}
+
+.feature-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  border-color: rgba(13, 110, 253, 0.3);
+}
+
+.feature-icon {
+  transition: var(--transition-base);
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(13, 110, 253, 0.1);
+  border-radius: 50%;
+  margin-bottom: 1rem;
+  color: var(--primary-color);
+}
+
+.feature-icon svg {
+  width: 30px;
+  height: 30px;
+}
+
+/* بهبود یافته بخش CTA */
+.cta-section {
+  background: linear-gradient(135deg, var(--primary-color) 0%, #0b5ed7 100%);
+  position: relative;
+  overflow: hidden;
+  color: white;
+  padding: 4rem 0;
+}
+
+.cta-section::before {
+  content: "";
+  position: absolute;
+  top: -50px;
+  right: -50px;
+  width: 200px;
+  height: 200px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+}
+
+.cta-section::after {
+  content: "";
+  position: absolute;
+  bottom: -100px;
+  left: -50px;
+  width: 300px;
+  height: 300px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 50%;
+}
+
+.cta-content {
+  position: relative;
+  z-index: 2;
+}
+
+/* بهبود یافته مدیریت تصاویر */
+.image-wrapper {
+  width: 100%;
+  max-width: 300px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.image-wrapper img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 0.5rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+/* انیمیشن‌های سفارشی */
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+@keyframes float {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0); }
+}
+
+.navbar-brand:hover {
+  animation: pulse 1.5s infinite;
+}
+
+.floating {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* بهبود یافته رسپانسیو */
+@media (max-width: 992px) {
+  .navbar-collapse {
+    padding-top: 1rem;
+  }
+  
+  .nav-link {
+    padding: 0.5rem 0.75rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .navbar {
+    padding: 0.5rem 1rem;
+  }
+  
+  .hero-section {
+    padding: 3rem 0;
+  }
+  
+  .feature-card {
+    margin-bottom: 1.5rem;
+  }
+  
+  .cta-section {
+    padding: 3rem 0;
+  }
+  
+  .image-wrapper {
+    margin-top: 2rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .navbar-brand {
+    font-size: 1.25rem;
+  }
+  
+  .hero-section {
+    padding: 2rem 0;
+    text-align: center;
+  }
+  
+  footer {
+    padding: 1.5rem 0;
+  }
+  
+  .footer-links {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+}
+
+.ripple-effect {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.7);
+  transform: scale(0);
+  animation: ripple 0.6s linear;
+  pointer-events: none;
+  width: 100px;
+  height: 100px;
+  top: calc(50% - 50px);
+  left: calc(50% - 50px);
+}
+
+/* استایل‌های دکمه موافقم - اصلاح شده */
+#agree-btn {
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  border: none;
+  cursor: pointer;
+}
+
+#agree-btn:disabled {
+  opacity: 0.8;
+  cursor: not-allowed;
+}
+
+/* انیمیشن ripple - اصلاح شده */
+@keyframes ripple {
+  0% {
+    transform: scale(0);
+    opacity: 0.5;
+  }
+  100% {
+    transform: scale(10);
+    opacity: 0;
+  }
+}
+
+/* استایل‌های پیام تأیید - اصلاح شده */
+.agreement-confirmation {
+  position: relative;
+  min-height: 180px;
+}
+
+.agreement-alert {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 1rem;
+  background: rgba(40, 167, 69, 0.9);
+  color: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  transform: translateY(100%);
+  opacity: 0;
+  transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.agreement-alert.show {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.agreement-alert.hide {
+  transform: translateY(-100%);
+  opacity: 0;
+}
+
+
+/* Survey List Styles */
+
+.survey-container {
+    margin: 2rem auto;
+    padding: 0 1rem;
+    width: 100%;
+    max-width: 1400px; /* محدودیت عرض برای مانیتورهای بزرگ */
+}
+
+.survey-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* کارت‌ها در ردیف‌های منعطف */
+    gap: 1.5rem;
+    padding: 1rem 0;
+    overflow-y: auto; /* اسکرول عمودی در صورت نیاز */
+    max-height: 70vh; /* ارتفاع حداکثر برای اسکرول */
+}
+
+.survey-card {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.survey-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+
+
+.survey-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.survey-title {
+    color: #2c3e50;
+    font-weight: 700;
+}
+
+.survey-create-btn {
+    font-weight: 600;
+    padding: 0.5rem 1.5rem;
+}
+
+.survey-empty {
+    text-align: center;
+    padding: 3rem;
+    background: #f8f9fa;
+    border-radius: 10px;
+    margin-top: 2rem;
+}
+
+.empty-icon {
+    font-size: 4rem;
+    color: #7f8c8d;
+    margin-bottom: 1rem;
+}
+
+
+.survey-card .btn {
+    min-width: 90px;
+    margin: 0 5px;
+}
+.survey-card .btn-outline-danger:hover {
+    background-color: #dc3545;
+    color: white;
+}
+
+.card-header {
+    padding: 1.25rem;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.status-badge {
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.status-badge.active {
+    background: #2ecc71;
+    color: white;
+}
+
+.status-badge.inactive {
+    background: #e74c3c;
+    color: white;
+}
+
+.survey-desc {
+    color: #7f8c8d;
+    margin-bottom: 1rem;
+}
+
+.survey-meta {
+    display: flex;
+    justify-content: space-between;
+    color: #95a5a6;
+    font-size: 0.9rem;
+}
+
+.card-footer {
+    padding: 1rem;
+    background: #f8f9fa;
+    display: flex;
+    justify-content: space-between;
+}
+
+
+/* Survey Create Page Styles */
+.survey-create-container {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+.survey-create-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #eee;
+}
+
+.survey-create-card {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    padding: 2rem;
+}
+
+.form-section {
+    margin-bottom: 2.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px dashed #eee;
+}
+
+.form-section h4 {
+    color: #3498db;
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .survey-create-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+    
+    .form-actions {
+        flex-direction: column;
+    }
+}

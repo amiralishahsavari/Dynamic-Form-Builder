@@ -1,0 +1,147 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block content %}
+<!-- هدر با گرادیان هماهنگ -->
+<section class="contact-hero py-5" style="background: linear-gradient(135deg, #79b4ef 0%, #ecedef 100%); border-radius: 10px;">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-8 text-center">
+        <h1 class="display-5 fw-bold mb-4 text-dark">تماس با ما</h1>
+        <p class="lead text-dark fw-bold">
+          ما اینجا هستیم تا به سوالات شما پاسخ دهیم
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- بخش اصلی تماس -->
+<section class="py-5 bg-white">
+  <div class="container">
+    <div class="row g-4">
+      <!-- اطلاعات تماس -->
+      <div class="col-lg-4">
+        <div class="contact-info p-4 rounded-4 shadow-sm h-100" style="border-top: 5px solid #79b4ef;">
+          <h3 class="h4 fw-bold mb-4 text-primary">راه‌های ارتباطی</h3>
+          
+          <div class="contact-item d-flex mb-4">
+            <div class="icon-wrapper me-3" style="width: 50px; height: 50px; background: rgba(121, 180, 239, 0.1); border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+              <i class="fas fa-map-marker-alt text-primary"></i>
+            </div>
+            <div>
+              <h4 class="h6 fw-bold mb-1">آدرس</h4>
+              <p class="text-muted mb-0">تهران، دانشگاه صنعتی شریف، مرکز فناوری اطلاعات</p>
+            </div>
+          </div>
+          
+          <div class="contact-item d-flex mb-4">
+            <div class="icon-wrapper me-3" style="width: 50px; height: 50px; background: rgba(121, 180, 239, 0.1); border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+              <i class="fas fa-phone text-primary"></i>
+            </div>
+            <div>
+              <h4 class="h6 fw-bold mb-1">تلفن</h4>
+              <p class="text-muted mb-0">۰۲۱-۶۶۱۶۶۱۶۱</p>
+              <p class="text-muted mb-0">پشتیبانی: داخلی ۱۲۳۴</p>
+            </div>
+          </div>
+          
+          <div class="contact-item d-flex mb-4">
+            <div class="icon-wrapper me-3" style="width: 50px; height: 50px; background: rgba(121, 180, 239, 0.1); border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+              <i class="fas fa-envelope text-primary"></i>
+            </div>
+            <div>
+              <h4 class="h6 fw-bold mb-1">ایمیل</h4>
+              <p class="text-muted mb-0">support@sharifline.ir</p>
+              <p class="text-muted mb-0">info@sharifline.ir</p>
+            </div>
+          </div>
+          
+          <div class="contact-item d-flex">
+            <div class="icon-wrapper me-3" style="width: 50px; height: 50px; background: rgba(121, 180, 239, 0.1); border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+              <i class="fas fa-clock text-primary"></i>
+            </div>
+            <div>
+              <h4 class="h6 fw-bold mb-1">ساعات کاری</h4>
+              <p class="text-muted mb-0">شنبه تا چهارشنبه: ۸ صبح تا ۴ بعدازظهر</p>
+              <p class="text-muted mb-0">پنجشنبه: ۸ صبح تا ۱۲ ظهر</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- فرم تماس -->
+      <div class="col-lg-8">
+        <div class="contact-form p-4 rounded-4 shadow-sm" style="border-top: 5px solid #0d6efd;">
+          <h3 class="h4 fw-bold mb-4 text-primary">پیام به ما</h3>
+          
+          <form>
+            <div class="row g-3">
+              <div class="col-md-6">
+                <div class="form-floating">
+                  <input type="text" class="form-control" id="name" placeholder="نام شما">
+                  <label for="name">نام شما</label>
+                </div>
+              </div>
+              
+              <div class="col-md-6">
+                <div class="form-floating">
+                  <input type="email" class="form-control" id="email" placeholder="ایمیل">
+                  <label for="email">ایمیل</label>
+                </div>
+              </div>
+              
+              <div class="col-12">
+                <div class="form-floating">
+                  <input type="text" class="form-control" id="subject" placeholder="موضوع">
+                  <label for="subject">موضوع</label>
+                </div>
+              </div>
+              
+              <div class="col-12">
+                <div class="form-floating">
+                  <textarea class="form-control" id="message" placeholder="پیام شما" style="height: 150px"></textarea>
+                  <label for="message">پیام شما</label>
+                </div>
+              </div>
+              
+              <div class="col-12">
+                <button type="submit" class="btn btn-primary btn-lg px-4 py-3 shadow w-100">
+                  <i class="fas fa-paper-plane me-2"></i>ارسال پیام
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- نقشه گوگل -->
+<section class="py-0">
+  <div class="container-fluid px-0">
+    <div class="ratio ratio-21x9">
+      <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3239.837114290855!2d51.35171431526891!3d35.70352398018776!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3f8e00491ff3dcd9%3A0xf0b3697c567024bc!2sSharif%20University%20of%20Technology!5e0!3m2!1sen!2s!4v1620000000000!5m2!1sen!2s" 
+              style="border:0;" 
+              allowfullscreen="" 
+              loading="lazy"></iframe>
+    </div>
+  </div>
+</section>
+
+<!-- CTA پایانی -->
+<section class="py-5" style="background: linear-gradient(135deg, #79b4ef 0%, #ecedef 100%);">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-8 text-center">
+        <h2 class="h1 fw-bold mb-4 text-dark">نیاز به کمک فوری دارید؟</h2>
+        <p class="lead mb-4 text-dark fw-bold">با شماره پشتیبانی ما تماس بگیرید</p>
+        <a href="tel:+982166166161" class="btn btn-primary btn-lg px-5 py-3 shadow">
+          <i class="fas fa-phone me-2"></i>۰۲۱ - ۶۶۱۶۶۱۶۱
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

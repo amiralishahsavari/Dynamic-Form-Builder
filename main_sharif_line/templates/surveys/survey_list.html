@@ -1,0 +1,86 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="survey-container" >
+    <div class="survey-header">
+        <h2 class="survey-title"><i class="fas fa-poll"></i> نظرسنجی‌های من</h2>
+        <a href="{% url 'survey_create' %}" class="btn btn-primary survey-create-btn">
+            <i class="fas fa-plus"></i> نظرسنجی جدید
+        </a>
+    </div>
+
+    {% if not surveys %}
+    <div class="survey-empty">
+        <div class="empty-icon">
+            <i class="far fa-clipboard"></i>
+        </div>
+        <h3>هنوز نظرسنجی ایجاد نکرده‌اید!</h3>
+        <p>برای جمع‌آوری نظرات، اولین نظرسنجی خود را ایجاد کنید</p>
+        <a href="{% url 'survey_create' %}" class="btn btn-primary">
+            ایجاد اولین نظرسنجی
+        </a>
+    </div>
+    {% else %}
+    <div class="survey-grid " >
+        {% for survey in surveys %}
+        <div class="survey-card">
+            <div class="card-header">
+                <h3>{{ survey.title }}</h3>
+                <span class="status-badge {% if survey.is_active %}active{% else %}inactive{% endif %}">
+                    {% if survey.is_active %}فعال{% else %}غیرفعال{% endif %}
+                </span>
+            </div>
+            <div class="card-body">
+                <p class="survey-desc">{{ survey.description|truncatechars:100 }}</p>
+                <div class="survey-meta">
+                    <span><i class="far fa-calendar"></i> {{ survey.created_at|date:"Y/m/d" }}</span>
+                    <span><i class="far fa-comment"></i> {{ survey.responses.count }} پاسخ</span>
+                </div>
+            </div>
+            <div class="card-footer">
+
+                <a href="{% url 'survey_info' survey.slug %}" class="btn btn-outline-primary">
+                    <i class="fas fa-eye"></i> مشاهده
+                </a>
+                <a href="{% url 'survey-detail' survey.slug %}" class="btn btn-outline-secondary">
+                    <i class="fas fa-edit"></i> ویرایش
+                </a>
+                <a href="{% url 'survey-delete' survey.slug %}" class="btn btn-outline-danger">
+                    <i class="fas fa-trash-alt"></i> حذف
+                </a>
+
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+</div>
+
+
+<script>
+document.querySelectorAll('.delete-survey-btn').forEach(btn => {
+    btn.addEventListener('click', function(e) {
+        e.preventDefault();
+        const url = this.getAttribute('href');
+        
+        Swal.fire({
+            title: 'حذف نظرسنجی',
+            text: "آیا از حذف این نظرسنجی مطمئن هستید؟ این عمل غیرقابل برگشت است!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'بله، حذف کن',
+            cancelButtonText: 'انصراف'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = url;
+            }
+        });
+    });
+});
+</script>
+
+
+{% endblock %} 

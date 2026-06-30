@@ -1,0 +1,120 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block content %}
+<!-- Hero Section -->
+<!-- Hero Section بهینه‌شده -->
+<section class="hero-section py-5" id="only-anchor" style="background: linear-gradient(100deg, #79b4ef 0%, #ecedef 100%); border-radius: 10px;">
+    <div class="container">
+        <div class="row align-items-center g-4">
+            <!-- بخش متن -->
+            <div class="col-lg-6 order-lg-1 order-2">
+                <h1 class="display-4 fw-bold mb-4 text-primary-dark" style="text-shadow: 1px 1px 3px rgba(0,0,0,0.1); font-weight: bold;">
+                    پلتفرم نظرسنجی دانشگاه صنعتی شریف
+                </h1>
+                <p class="lead mb-4 fs-5 text-dark fw-bold">
+                    جمع‌آوری و تحلیل هوشمند بازخوردهای دانشجویان و اساتید با 
+                    <span class="text-primary fw-bold">قابلیت‌های پیشرفته گزارش‌گیری</span>
+                </p>
+
+                <div class="d-flex flex-wrap gap-3 mt-4">
+                    {% if not user.is_authenticated %}
+                    <a href="{% url 'register' %}" class="btn btn-primary btn-lg px-4 py-3 shadow-sm">
+                        <i class="fas fa-user-plus me-2"></i>عضویت رایگان
+                    </a>
+                    <a href="{% url 'login' %}" class="btn btn-outline-primary btn-lg px-4 py-3 shadow-sm">
+                        <i class="fas fa-sign-in-alt me-2"></i>ورود به سیستم
+                    </a>
+                    {% else %}
+                    <a href="{% url 'survey_list' %}" class="btn btn-primary btn-lg px-4 py-3 shadow-sm">
+                        <i class="fas fa-plus-circle me-2"></i>نظرسنجی جدید
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- بخش تصویر -->
+            <div class="col-lg-6 order-lg-2 order-1">
+                <div class="hero-image-wrapper position-relative">
+                    <img src="https://i.ibb.co/93VnfhHV/survey.png" 
+                         class="img-fluid rounded-4 shadow-lg  floating my-4" 
+                         alt="شریف‌لاین"
+                         style="max-height: 400px; border: 2px solid rgba(255,255,255,0.8);">
+                    <div class="position-absolute top-0 start-0 w-100 h-100 rounded-4" 
+                         style="background: radial-gradient(circle, rgba(64, 148, 232, 0.1) 0%, rgba(183, 177, 177, 0) 70%); z-index: -1;">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Feature Section -->
+<section class="feature-section py-5 bg-white">
+    <div class="container">
+        <h2 class="text-center mb-5" style="font-weight: bold;">چرا شریف‌لاین؟</h2>
+
+        <div class="row g-4">
+            <!-- ویژگی ۱ -->
+            <div class="col-md-4">
+                <div class="feature-card p-4 h-100 text-center shadow-sm rounded">
+                    <div class="feature-icon mb-3 text-primary">
+                        <i class="fas fa-chart-pie fa-3x"></i>
+                    </div>
+                    <h3>تحلیل پیشرفته</h3>
+                    <p class="text-muted  fw-bold" style="font-weight: bold;">گزارش‌های تحلیلی دقیق با نمودارهای حرفه‌ای و خروجی
+                        اکسل</p>
+                </div>
+            </div>
+
+            <!-- ویژگی ۲ -->
+            <div class="col-md-4">
+                <div class="feature-card p-4 h-100 text-center shadow-sm rounded">
+                    <div class="feature-icon mb-3 text-primary">
+                        <i class="fas fa-lock fa-3x"></i>
+                    </div>
+                    <h3 style="font-weight: bold;">امنیت بالا</h3>
+                    <p class="text-muted" style="font-weight: bold;">سیستم احراز هویت دو مرحله‌ای و رمزنگاری پیشرفته
+                        داده‌ها</p>
+                </div>
+            </div>
+
+            <!-- ویژگی ۳ -->
+            <div class="col-md-4">
+                <div class="feature-card p-4 h-100 text-center shadow-sm rounded">
+                    <div class="feature-icon mb-3 text-primary">
+                        <i class="fas fa-mobile-alt fa-3x"></i>
+                    </div>
+                    <h3 style="font-weight: bold;">دسترسی آسان</h3>
+                    <p class="text-muted" style="font-weight: bold;">طراحی واکنش‌گرا و سازگار با تمام دستگاه‌های موبایل
+                        و تبلت</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Call to Action با گرادیان مشابه Hero -->
+<section class="cta-section py-5 text-white" style="background: linear-gradient(100deg, #79b4ef 0%, #ecedef 100%); border-radius: 10px;">
+    <div class="container text-center position-relative">
+        <div class="position-relative" style="z-index: 2;">
+            <h2 class="mb-4" style="font-weight: bold; color: black">همین حالا نظرسنجی خود را ایجاد کنید!</h2>
+            <p class="lead mb-4" style="font-weight: bold; color: black">با شریف‌لاین، ساخت و تحلیل نظرسنجی‌ها هیچ‌وقت به این آسانی نبوده است</p>
+            {% if not user.is_authenticated %}
+            <a href="#only-anchor" class="btn btn-primary btn-lg px-5 shadow-sm">
+                <i class="fas fa-rocket me-2"></i>شروع کنید
+            </a>
+            {% else %}
+            <a href="{% url 'survey_list' %}" class="btn btn-primary btn-lg px-5 shadow-sm">
+                <i class="fas fa-plus-circle me-2"></i>نظرسنجی جدید
+            </a>
+            {% endif %}
+        </div>
+        
+        <!-- افکت‌های دکوراتیو -->
+        <div class="position-absolute top-0 start-0 w-100 h-100 rounded-4" 
+             style="background: radial-gradient(circle, rgba(13,110,253,0.1) 0%, rgba(255,255,255,0) 70%); z-index: 1; pointer-events: none;">
+        </div>
+    </div>
+</section>
+{% endblock %}
